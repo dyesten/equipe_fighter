@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content%}	
+
+<header class="masthead">
+
+  	<!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="item active">
+          <img src="{{ STATIC_URL }}img/head.jpg">
+          <div class="container">
+            <div class="carousel-caption">
+              <!--<h2>Architectural Design</h2>-->
+              <p></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="{{ STATIC_URL }}img/slide-1.jpg">
+          <div class="container">
+            <div class="carousel-caption">
+              <h2></h2>
+              <p></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="{{ STATIC_URL }}img/slide-2.jpg">
+          <div class="container">
+            <div class="carousel-caption">
+				<h2></h2>
+              <p></p>
+            </div>
+          </div>
+        </div>       
+      </div><!-- /.carousel-inner -->
+      <div class="logo"><!--EQUIPE FIGTHER-->
+	  <!--<img src="{{ STATIC_URL }}img/head.jpg">-->
+	  </div> 
+      <!-- Controls -->
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+      </a>  
+    </div>
+    <!-- /.carousel -->
+  
+</header>
+
+<!-- Fixed navbar -->
+<div class="navbar navbar-custom navbar-inverse navbar-static-top" id="nav">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav nav-justified">
+          <li><a href="{{BASE_DIR}}">Home</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#noticias">Noticias</a></li>
+          <li><a href="#section3">Galeria</a></li>
+		  <!--
+          <li class="dropdown">
+            <a href="#section3" class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Academic</a></li>
+              <li><a href="#">Commercial</a></li>
+              <li><a href="#">Financial</a></li>
+              <li><a href="#">Interior Design</a></li>
+              <li><a href="#">Medical</a></li>
+              <li><a href="#">Religious</a></li>
+            </ul>
+          </li>
+		  -->
+          <li><a href="#localizacao">Localização</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div><!--/.container -->
+</div><!--/.navbar -->
+
+
+<!-- Begin page content -->
+<div class="divider" id="sobre"></div>
+ 
+<div class="container">
+  <div class="col-sm-10 col-sm-offset-1">
+  
+    <div class="page-header text-center">      
+      <h1>Equipe Fighter</h1>
+    </div>
+    
+    <p class="lead text-center"> 
+
+      A equipe fighter é a cabulosa e mais tenebrosa!
+    </p> 
+    
+    <hr>
+    
+    <div class="divider"></div>  
+  </div>
+</div>
+    
+<div class="divider"></div>
+  
+<section class="bg-1">
+  <div class="col-sm-6 col-sm-offset-3 text-center"></div>
+</section>
+  
+<div class="divider" id="noticias"></div>
+   
+<div class="row">
+{% for n in noticias %}
+  	<div class="col-sm-10 col-sm-offset-1">	
+      <h1><a href="noticia/{{n.id}}"> {{n.titulo|upper}}</a></h1>
+      <p style="color:#999999;font-size:10;">Postado em {{n.dataAlteracao|date:"d"}} de {{n.dataAlteracao|date:"F"}} de {{n.dataAlteracao|date:"Y"}} as {{ n.dataAlteracao|time:"H:i" }}</p>
+	  <p style="color:#999999;font-size:10;">Autor {{n.user}}</p>
+      <hr>
+		<p>{{n.noticia|safe|truncatewords:50}}</p>
+      <hr>
+	  
+	  <div class="divider"></div>
+  	</div><!--/col-->
+{% empty %}
+		Sem noticias para exibir
+{% endfor %}	
+<a href="/noticias/" style="color:blue;font-size:16px;"> ver mais </a>
+</div><!--/container-->
+
+<div class="divider"></div>
+  
+<!--
+<section class="bg-3">
+  <div class="col-sm-6 col-sm-offset-3 text-center"><h2 style="padding:20px;background-color:rgba(5,5,5,.8)">Clients &amp; Partners</h2></div>
+</section>
+-->
+  
+<div class="divider" id="section3"></div>
+  
+<div class="bg-4">
+  <div class="container">
+	<div class="row">
+	  <!-- for iteravel em 3 itens... -->
+	   <div class="col-sm-4 col-xs-6">
+      
+        <div class="panel panel-default">
+          <div class="panel-thumbnail"><a href="#" title="Renovations"><img src="//placehold.it/600x400/444/F8F8F8" class="img-responsive"></a></div>
+          <div class="panel-body">
+            <p>Renovations</p>
+            <p></p>
+
+          </div>
+        </div><!--/panel-->
+      </div><!--/col-->
+	  
+      
+      <div class="col-sm-4 col-xs-6">
+      
+      	<div class="panel panel-default">
+          <div class="panel-thumbnail"><a href="#" title="Academic Institutions"><img src="{{ STATIC_URL }}img/head.jpg" class="img-responsive"></a></div>
+          <div class="panel-body">
+            <p>Academic Institutions</p>
+            <p></p>
+            
+          </div>
+        </div><!--/panel--> 
+      </div><!--/col-->
+      
+	</div><!--/row-->
+  </div><!--/container-->
+</div>
+
+<div class="divider" id="localizacao"></div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-1">
+  </div>
+</div>
+  
+<div class="row">
+  
+  <div class="col-sm-10 col-sm-offset-1">
+      <h1>Localizacao</h1>
+  </div>   
+       
+  <div id="map-canvas"></div>
+  
+  <hr>
+  
+  <div class="col-sm-8"></div>
+  <div class="col-sm-3 pull-right">
+
+      <address>
+        Academia Chromus<br>
+        <span id="map-input">
+        Rua Seara, 177<br>
+        Coqueiros, Belo Horizonte - MG </span><br>
+        Tel: (031) 3434-5999
+      </address>	  
+    
+      <address>
+        <strong>Email</strong><br>
+        <a href="mailto:#">first.last@example.com</a>
+      </address>          
+  </div>
+  
+</div><!--/row-->
+  
+<div class="divider" id="contato"></div>  
+
+<div class="row">
+  
+  <hr>
+  
+  <form action="." id="form_contato" method="POST" style="display:block;">
+
+  <div class="col-sm-9 col-sm-offset-1">
+      
+      <div class="row form-group">
+        <div class="col-md-12">
+        <h1>Contato</h1>        
+        </div>
+
+      {% csrf_token %}    
+      {{ form.non_field_errors }}
+        <div class="col-xs-10">            
+            {{ form.nome|add_class:"form-control"|attr:"placeholder:Seu Nome"}}
+            {{ form.nome.errors }}
+        </div>
+
+      </div>
+
+      <div class="row form-group">
+          <div class="col-xs-5">
+            {{ form.email|add_class:"form-control"|attr:"placeholder:Email"}}
+            {{ form.email.errors }}
+          </div>
+          <div class="col-xs-5">
+            {{ form.telefone|add_class:"form-control"|attr:"placeholder:Telefone"}}
+            {{ form.telefone.errors }}
+          </div>
+      </div>
+
+      <div class="row form-group">
+          <div class="col-xs-10">            
+            {{ form.comentario|add_class:"form-control"|attr:"placeholder:Comentario"}}
+            {{ form.comentario.errors }}
+          </div>
+      </div>
+      <div class="row form-group">
+          <div class="col-xs-10">
+            <button id="btn_contato" class="btn btn-default pull-right">Enviar</button>
+          </div>
+      </div>
+    
+  </div>
+  </form>
+</div><!--/row-->
+{% endblock content%}
+
+{% block script%}
+<script>
+
+$(document).ready(function(){  
+  var origem = '{{origem}}';
+  if(origem == 'criando'){    
+    location.href = '#contato';
+  }
+
+	$('#btn_contato').click(function(){
+		$('#form_contato').submit();
+	});
+});
+
+</script>
+{% endblock script%}
