@@ -3,6 +3,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from tinymce.models import HTMLField
+
 from projeto.core.managers import NoticiasManager
 
 
@@ -21,16 +23,23 @@ class Noticia(models.Model):
 	dataCadastro = models.DateTimeField(auto_now_add=True)
 	dataAlteracao = models.DateTimeField(auto_now=True)
 	titulo = models.CharField(max_length=100)
-	#noticia = HTMLField()
-	noticia = models.TextField()
+	slug = models.SlugField(_('Slug'), null=False, blank=False)
+	noticia = HTMLField()
+	#noticia = models.TextField()
 	#image = models.ImageField(storage=fs)
-	imagem = models.FileField(upload_to='img', null=True, blank=True)	
+	imagem = models.FileField(upload_to='img', null=True, blank=True)
 	user = models.ForeignKey(User)
 	
 	objects = NoticiasManager()
 	
 	def __unicode__(self):
 		return self.titulo
+	
+	'''
+	@models.permalink
+	def get_absolute_url(self):
+		return ('core:speaker_detail', (), {'slug': self.slug})
+	'''
 	
 	class Meta:
 		db_table = "tb_noticias"

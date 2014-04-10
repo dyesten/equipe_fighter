@@ -1,12 +1,15 @@
 from django.contrib import admin
 from projeto.core.models import Noticia
 
-class NoticiasAdmin(admin.ModelAdmin):		
+class NoticiasAdmin(admin.ModelAdmin):
 	fieldsets = [
-		('Informe um titulo para sua noticia', {'fields':['titulo']}),
+		('Informe um titulo para sua noticia', {'fields':['titulo','slug']}),
+		
 		('Informe a noticia', {'fields':['noticia']}),
 		('Selecione uma imagem', {'fields':['imagem']}),
 	]
+	prepopulated_fields = {'slug': ('titulo',)}#garante o preenchimento automatico do slug, baseado no nome digitado
+	
 	exclude = ('user',)
 	list_display = ('titulo', 'dataCadastro', 'dataAlteracao', 'noticiaAlterado')
 	list_filter = ['dataCadastro', 'dataAlteracao', 'titulo']

@@ -52,8 +52,8 @@ def noticias(request):
 				}
 	return render(request, 'noticias.html', context)
 
-def noticia(request, id_noticia):
+def noticia(request, slug):
 	context = {
-				'noticia':Noticia.objects.filter(id=id_noticia)
+				'noticia':Noticia.objects.filter(slug=slug)
 				}
 	return render(request, 'exibeNoticia.html', context)
