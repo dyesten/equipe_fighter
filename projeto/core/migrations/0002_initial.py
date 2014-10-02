@@ -8,14 +8,62 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding model 'Sobre'
+        db.create_table('tb_sobre', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('dataCadastro', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('dataAlteracao', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('descricao', self.gf('django.db.models.fields.TextField')()),
+        ))
+        db.send_create_signal(u'core', ['Sobre'])
 
-        # Changing field 'Noticia.noticia'
-        db.alter_column('tb_noticias', 'noticia', self.gf('tinymce.models.HTMLField')())
+        # Adding model 'Noticia'
+        db.create_table('tb_noticias', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('dataCadastro', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('dataAlteracao', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('titulo', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50)),
+            ('noticia', self.gf('tinymce.models.HTMLField')()),
+            ('imagem', self.gf('django.db.models.fields.files.FileField')(max_length=100, null=True, blank=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+        ))
+        db.send_create_signal(u'core', ['Noticia'])
+
+        # Adding model 'Contato'
+        db.create_table('tb_contatos', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('nome', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('email', self.gf('django.db.models.fields.EmailField')(max_length=200)),
+            ('telefone', self.gf('django.db.models.fields.CharField')(max_length=15)),
+            ('comentario', self.gf('django.db.models.fields.TextField')()),
+            ('dataCadastro', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+        ))
+        db.send_create_signal(u'core', ['Contato'])
+
+        # Adding model 'Photo'
+        db.create_table(u'core_photo', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('image', self.gf('cloudinary.models.CloudinaryField')(max_length=100, null=True, blank=True)),
+            ('dataCadastro', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('carrosel', self.gf('django.db.models.fields.BooleanField')()),
+        ))
+        db.send_create_signal(u'core', ['Photo'])
+
 
     def backwards(self, orm):
+        # Deleting model 'Sobre'
+        db.delete_table('tb_sobre')
 
-        # Changing field 'Noticia.noticia'
-        db.alter_column('tb_noticias', 'noticia', self.gf('django.db.models.fields.TextField')())
+        # Deleting model 'Noticia'
+        db.delete_table('tb_noticias')
+
+        # Deleting model 'Contato'
+        db.delete_table('tb_contatos')
+
+        # Deleting model 'Photo'
+        db.delete_table(u'core_photo')
+
 
     models = {
         u'auth.group': {
@@ -73,6 +121,13 @@ class Migration(SchemaMigration):
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50'}),
             'titulo': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
+        u'core.photo': {
+            'Meta': {'object_name': 'Photo'},
+            'carrosel': ('django.db.models.fields.BooleanField', [], {}),
+            'dataCadastro': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'image': ('cloudinary.models.CloudinaryField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})
         },
         u'core.sobre': {
             'Meta': {'object_name': 'Sobre', 'db_table': "'tb_sobre'"},

@@ -24,7 +24,7 @@ class Migration(SchemaMigration):
             ('dataAlteracao', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
             ('titulo', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50)),
-            ('noticia', self.gf('django.db.models.fields.TextField')()),
+            ('noticia', self.gf('tinymce.models.HTMLField')()),
             ('imagem', self.gf('django.db.models.fields.files.FileField')(max_length=100, null=True, blank=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
         ))
@@ -41,6 +41,15 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'core', ['Contato'])
 
+        # Adding model 'Photo'
+        db.create_table(u'core_photo', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('image', self.gf('cloudinary.models.CloudinaryField')(max_length=100, null=True, blank=True)),
+            ('dataCadastro', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('carrosel', self.gf('django.db.models.fields.BooleanField')()),
+        ))
+        db.send_create_signal(u'core', ['Photo'])
+
 
     def backwards(self, orm):
         # Deleting model 'Sobre'
@@ -51,6 +60,9 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Contato'
         db.delete_table('tb_contatos')
+
+        # Deleting model 'Photo'
+        db.delete_table(u'core_photo')
 
 
     models = {
@@ -105,10 +117,17 @@ class Migration(SchemaMigration):
             'dataCadastro': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'imagem': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'noticia': ('django.db.models.fields.TextField', [], {}),
+            'noticia': ('tinymce.models.HTMLField', [], {}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50'}),
             'titulo': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
+        u'core.photo': {
+            'Meta': {'object_name': 'Photo'},
+            'carrosel': ('django.db.models.fields.BooleanField', [], {}),
+            'dataCadastro': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'image': ('cloudinary.models.CloudinaryField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})
         },
         u'core.sobre': {
             'Meta': {'object_name': 'Sobre', 'db_table': "'tb_sobre'"},

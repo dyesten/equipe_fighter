@@ -5,7 +5,11 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from tinymce.models import HTMLField
 
-from projeto.core.managers import NoticiasManager
+from cloudinary.models import CloudinaryField
+from projeto.core.managers import NoticiasManager, PhotosManager
+
+from south.modelsinspector import add_introspection_rules
+add_introspection_rules([], ["^cloudinary\.models\.CloudinaryField"])
 
 
 class Sobre(models.Model):	 
@@ -63,6 +67,21 @@ class Contato(models.Model):
 		verbose_name = _('contato')
 		verbose_name_plural = _('contatos')
 
+
+class Photo(models.Model):
+	image = CloudinaryField('image', null=True, blank=True)
+	dataCadastro = models.DateTimeField(auto_now_add=True)
+	carrosel = models.BooleanField()
+	
+	objects = PhotosManager()
+	
+	def __unicode__(self):
+		return self.image.public_id
+	
+	class Meta:
+		verbose_name = _('imagem')
+		verbose_name_plural = _('imagens')
+	
 '''
 class FilaTeste(models.Model):
 	name = models.CharField(_('Nome'), max_length=255)

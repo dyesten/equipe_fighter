@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load cloudinary %}
+{% cloudinary_includes %}
 {% load widget_tweaks %}
 {% block content%}	
 
@@ -15,36 +17,24 @@
       </ol>
       <div class="carousel-inner">
         <div class="item active">
-          <img src="{{ STATIC_URL }}img/head.jpg">
-          <div class="container">
-            <div class="carousel-caption">
-              <!--<h2>Architectural Design</h2>-->
-              <p></p>
-            </div>
-          </div>
-        </div>
-        <div class="item">
           <img src="{{ STATIC_URL }}img/slide-1.jpg">
-          <div class="container">
-            <div class="carousel-caption">
-              <h2></h2>
-              <p></p>
-            </div>
-          </div>
+          
         </div>
-        <div class="item">
-          <img src="{{ STATIC_URL }}img/slide-2.jpg">
-          <div class="container">
-            <div class="carousel-caption">
-				<h2></h2>
-              <p></p>
-            </div>
-          </div>
-        </div>       
+
+		{% for c in carrosel %}
+			<div class="item">
+			  {% cloudinary c.image height=580 %}
+			  <div class="container">
+				<div class="carousel-caption">
+				  <h2>{{c.image}}</h2>
+				  <p>{{c.image}}</p>
+				</div>
+			  </div>
+			</div>
+		{% endfor %}
+
       </div><!-- /.carousel-inner -->
-      <div class="logo"><!--EQUIPE FIGTHER-->
-	  <!--<img src="{{ STATIC_URL }}img/head.jpg">-->
-	  </div> 
+      
       <!-- Controls -->
       <a class="left carousel-control" href="#myCarousel" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left"></span>
@@ -72,20 +62,7 @@
           <li><a href="{{BASE_DIR}}">Home</a></li>
           <li><a href="#sobre">Sobre</a></li>
           <li><a href="#noticias">Noticias</a></li>
-          <li><a href="#section3">Galeria</a></li>
-		  <!--
-          <li class="dropdown">
-            <a href="#section3" class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Academic</a></li>
-              <li><a href="#">Commercial</a></li>
-              <li><a href="#">Financial</a></li>
-              <li><a href="#">Interior Design</a></li>
-              <li><a href="#">Medical</a></li>
-              <li><a href="#">Religious</a></li>
-            </ul>
-          </li>
-		  -->
+          <li><a href="#galeria">Galeria</a></li>
           <li><a href="#localizacao">Localização</a></li>
           <li><a href="#contato">Contato</a></li>
         </ul>
@@ -105,8 +82,7 @@
     </div>
     
     <p class="lead text-center"> 
-
-      A equipe fighter é a cabulosa e mais tenebrosa!
+		A equipe fighter é asadfdfgffhjfda!
     </p> 
     
     <hr>
@@ -137,7 +113,7 @@
   	</div><!--/col-->
 {% empty %}
 		Sem noticias para exibir
-{% endfor %}	
+{% endfor %}
 <a href="/noticias/" style="color:blue;font-size:16px;"> ver mais </a>
 </div><!--/container-->
 
@@ -149,39 +125,33 @@
 </section>
 -->
   
-<div class="divider" id="section3"></div>
-  
-<div class="bg-4">
+<div class="divider" id="galeria"></div>
+
+<div class="col-sm-10 col-sm-offset-1">
+  <h1>Galeria</h1>
+</div>
+
+
+<div>
   <div class="container">
 	<div class="row">
-	  <!-- for iteravel em 3 itens... -->
-	   <div class="col-sm-4 col-xs-6">
-      
-        <div class="panel panel-default">
-          <div class="panel-thumbnail"><a href="#" title="Renovations"><img src="//placehold.it/600x400/444/F8F8F8" class="img-responsive"></a></div>
-          <div class="panel-body">
-            <p>Renovations</p>
-            <p></p>
-
-          </div>
-        </div><!--/panel-->
-      </div><!--/col-->
-	  
-      
-      <div class="col-sm-4 col-xs-6">
-      
-      	<div class="panel panel-default">
-          <div class="panel-thumbnail"><a href="#" title="Academic Institutions"><img src="{{ STATIC_URL }}img/head.jpg" class="img-responsive"></a></div>
-          <div class="panel-body">
-            <p>Academic Institutions</p>
-            <p></p>
-            
-          </div>
-        </div><!--/panel--> 
-      </div><!--/col-->
-      
-	</div><!--/row-->
-  </div><!--/container-->
+		{% for img in fotos %}
+			<div class="col-sm-2 col-xs-7">
+				<div class="panel panel-default">
+					<div>
+						<a href='http://res.cloudinary.com/fighter/image/upload/h_450/{{ img.image }}' rel="lightbox-cats" title="" class="thumbnail">
+							{% cloudinary img.image height=500 width=400 crop="fill" %}
+						</a>
+					</div>
+				</div>
+			</div>
+		{% empty %}
+			<li> Sem Itens na Lista </li>
+		{% endfor %}
+	<a href="/galeria/" style="color:blue;font-size:16px;"> ver mais </a>
+	</div>
+	
+  </div>
 </div>
 
 <div class="divider" id="localizacao"></div>
@@ -207,14 +177,14 @@
       <address>
         Academia Chromus<br>
         <span id="map-input">
-        Rua Seara, 177<br>
-        Coqueiros, Belo Horizonte - MG </span><br>
+        Rua Marfim, 177<br>
+        Centro, Belo Horizonte - MG </span><br>
         Tel: (031) 3434-5999
       </address>	  
     
       <address>
         <strong>Email</strong><br>
-        <a href="mailto:#">first.last@example.com</a>
+        <a href="mailto:#">email@email.com</a>
       </address>          
   </div>
   

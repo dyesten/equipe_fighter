@@ -1,38 +1,24 @@
-"""
-Django settings for projeto project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
-"""
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-#import os
-#BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 from decouple import config
 from dj_database_url import parse as db_url
 from unipath import Path
 BASE_DIR = Path(__file__).parent
 
+#import cloudinary
+#import cloudinary.uploader
+#import cloudinary.api
 
 DEFAULT_FROM_EMAIL = "dyesten.pt@gmail.com"
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_PORT=587
 EMAIL_HOST_USER="dyesten.pt@gmail.com"
-EMAIL_HOST_PASSWORD="70denovootario"#para enviar o email tem que por a senha
+EMAIL_HOST_PASSWORD=config('PASS_EMAIL')
 EMAIL_USE_TLS=True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'cl28f3n02vridlt1yg6@3q4ko3y@%2zkphpk2(f#o1^&u=#6-9'
 SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 TEMPLATE_DEBUG = DEBUG
@@ -52,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 	'widget_tweaks',
 	'south',
+	'cloudinary',
 	'tinymce',
     'projeto.core',	
 )
@@ -85,13 +72,9 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
 LANGUAGE_CODE = 'pt-br'
-
 TIME_ZONE = 'America/Sao_Paulo'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -127,3 +110,10 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 #'theme_advanced_buttons3_add': "|,spellchecker",
 #'plugins': "spellchecker",
+
+
+CLOUDINARY = {
+    'cloud_name' : 'fighter',
+    'api_key' : config('CLOUDINARY_KEY'),
+    'api_secret':config('CLOUDINARY_SECRECT')
+}
