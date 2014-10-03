@@ -12,3 +12,4 @@ pystache==0.5.3
 pytz==2013.9
 static==1.0.2
 django-tinymce
+cloudinary
