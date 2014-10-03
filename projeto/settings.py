@@ -7,10 +7,10 @@ BASE_DIR = Path(__file__).parent
 #import cloudinary.uploader
 #import cloudinary.api
 
-DEFAULT_FROM_EMAIL = "dyesten.pt@gmail.com"
+DEFAULT_FROM_EMAIL = "site.motok@gmail.com"
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_PORT=587
-EMAIL_HOST_USER="dyesten.pt@gmail.com"
+EMAIL_HOST_USER="site.motok@gmail.com"
 EMAIL_HOST_PASSWORD=config('PASS_EMAIL')
 EMAIL_USE_TLS=True
 

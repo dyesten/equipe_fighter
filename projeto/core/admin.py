@@ -1,5 +1,6 @@
+# coding: latin
 from django.contrib import admin
-from projeto.core.models import Noticia, Photo
+from projeto.core.models import Sobre, Noticia, Photo
 from projeto.core.forms import PhotoForm
 from django.utils.translation import ungettext, ugettext as _
 
@@ -7,6 +8,11 @@ from django.utils.translation import ungettext, ugettext as _
 #from django.template.response import TemplateResponse
 
 import cloudinary.uploader
+
+class SobreAdmin(admin.ModelAdmin):
+	fieldsets = [
+		('Informe a descrição', {'fields':['descricao']}),
+	]
 
 
 class NoticiasAdmin(admin.ModelAdmin):
@@ -121,6 +127,7 @@ class PhotoAdmin(admin.ModelAdmin):
 	#change_list_template = 'diretorio_templates_projeto/nome_template.html'
 	
 	
+admin.site.register(Sobre, SobreAdmin)
 admin.site.register(Noticia, NoticiasAdmin)
 admin.site.register(Photo, PhotoAdmin)
 

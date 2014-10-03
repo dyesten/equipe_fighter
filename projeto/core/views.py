@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
 
 from projeto.core.forms import ContatoForm, PhotoForm
-from projeto.core.models import Contato, Noticia, Photo
+from projeto.core.models import Sobre, Contato, Noticia, Photo
 
 #from cloudinary.forms import cl_init_js_callbacks
 
@@ -23,6 +23,7 @@ def home(request):
 def new(request):
 	context = {
 				'origem':'novo',
+				'sobre':Sobre.objects.ultimo_sobre(),
 				'noticias':Noticia.objects.ultimas_noticias(),
 				'fotos':Photo.objects.ultimas_fotos(),
 				'carrosel':Photo.objects.carrosel_fotos(),

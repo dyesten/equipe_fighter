@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from tinymce.models import HTMLField
 
 from cloudinary.models import CloudinaryField
-from projeto.core.managers import NoticiasManager, PhotosManager
+from projeto.core.managers import NoticiasManager, PhotosManager, SobreManager
 
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ["^cloudinary\.models\.CloudinaryField"])
@@ -16,11 +16,15 @@ class Sobre(models.Model):
 	dataCadastro = models.DateTimeField(auto_now_add=True)	
 	dataAlteracao = models.DateTimeField(auto_now=True)
 	descricao = models.TextField()	
+	objects = SobreManager()
 	
+	def __unicode__(self):
+		return self.descricao
+		
 	class Meta:
 		db_table = "tb_sobre"
-		verbose_name = _('descricao')
-		verbose_name_plural = _('descricoes')
+		verbose_name = _('Descricao')
+		verbose_name_plural = _('Descricoes Sobre')
 
 
 class Noticia(models.Model):
@@ -29,21 +33,12 @@ class Noticia(models.Model):
 	titulo = models.CharField(max_length=100)
 	slug = models.SlugField(_('Slug'), null=False, blank=False)
 	noticia = HTMLField()
-	#noticia = models.TextField()
-	#image = models.ImageField(storage=fs)
 	imagem = models.FileField(upload_to='img', null=True, blank=True)
 	user = models.ForeignKey(User)
-	
 	objects = NoticiasManager()
 	
 	def __unicode__(self):
 		return self.titulo
-	
-	'''
-	@models.permalink
-	def get_absolute_url(self):
-		return ('core:speaker_detail', (), {'slug': self.slug})
-	'''
 	
 	class Meta:
 		db_table = "tb_noticias"
@@ -58,7 +53,6 @@ class Contato(models.Model):
 	comentario = models.TextField()
 	dataCadastro = models.DateTimeField(auto_now_add=True)	
 	
-		
 	def __unicode__(self):
 		return self.nome		
 	

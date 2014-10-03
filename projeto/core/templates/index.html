@@ -82,7 +82,11 @@
     </div>
     
     <p class="lead text-center"> 
-		A equipe fighter é asadfdfgffhjfda!
+		{% for s in sobre %}
+			{{ s.descricao }}
+		{% empty %}
+			Nenhuma descricao informada.
+		{% endfor %}
     </p> 
     
     <hr>
