@@ -1,6 +1,8 @@
 from decouple import config
 from dj_database_url import parse as db_url
 from unipath import Path
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+
 BASE_DIR = Path(__file__).parent
 
 #import cloudinary
@@ -30,6 +32,7 @@ SOUTH_TESTS_MIGRATE = False
 # Application definition
 
 INSTALLED_APPS = (
+	'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,6 +86,19 @@ USE_TZ = True
 
 STATIC_ROOT = BASE_DIR.child('staticfiles')
 STATIC_URL = '/static/'
+
+TEMPLATE_CONTEXT_PROCESSORS = TCP + (
+    'django.core.context_processors.request',
+)
+
+SUIT_CONFIG = {
+    'SEARCH_URL': '/admin/user',
+    # Parameter also accepts url name
+    'SEARCH_URL': 'admin:auth_user_changelist',
+
+    # Set to empty string if you want to hide search from menu
+    'SEARCH_URL': ''
+}
 
 '''
 AUTHENTICATION_BACKENDS = (

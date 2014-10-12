@@ -1,34 +1,41 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
-{% block content%}	
-
- 
-<div class="container">
-  <div class="col-sm-10 col-sm-offset-1">
-  
-    <div class="page-header text-center">      
-      <h1>Obrigado {{ contato.nome}}!!</h1>
+{% block content%}
+		<div class="row-fluid">
+            <div class="span12">
+                <div id="headerSeparator"></div>
+            </div>
+        </div>
     </div>
-    
-    <p class="lead text-center"> 
-		A Equipe Fighter agradece seu contato.<br/>
-		Retornaremos em breve nos contatos que deixou: [{{contato.telefone }}|{{contato.email}}].
-    </p> 
 	
-	<p class="lead text-center"> 
-		<a href="/">P&aacute;gina Inicial</a>
-    </p> 
-    
-    <hr>        
-  </div>
-</div>
+    <div class="contentArea">
 
-<div class="divider"></div>
+        <div class="divPanel notop page-content">
+
+            <div class="breadcrumbs">
+                <a href="/">Home</a> &nbsp;/&nbsp; <span>Contato</span>
+            </div>
+			
+            <div class="row-fluid">
+                <div class="span8" id="divMain">
+					<h1>Obrigado <i>{{ contato.nome}}</i>!!</h1>
+					<p>
+						Retornaremos em breve nos contatos que deixou: <br/>
+						<li><strong>Telefone:</strong> {{contato.telefone }}</li>
+						<li><strong>Email:</strong> {{contato.email}}</li>
+						<br/>A <strong>Equipe Fighter</strong> agradece seu contato.
+					</p>
+                </div>
+            </div>
+
+            <div id="footerInnerSeparator"></div>
+        </div>
+    </div>
+
+    <div id="footerOuterSeparator"></div>
+
 {% endblock content%}
 
-
 {% block script%}
-<script>
-//location.href = '#contato';
-</script>
+<script>$(document).ready(function(){$("#menubar li").removeClass();$("#contato").attr('class', 'active');});</script>
 {% endblock script%}

@@ -3,9 +3,10 @@ from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
 
 from projeto.core.forms import ContatoForm, PhotoForm
-from projeto.core.models import Sobre, Contato, Noticia, Photo
-
+from projeto.core.models import Sobre, Contato, Noticia, Photo, Equipe, Modalidades, HorarioAulas
 #from cloudinary.forms import cl_init_js_callbacks
+
+G_CONTEXT = {'sobre':Sobre.objects.ultimo_sobre(), 'noticias':Noticia.objects.ultimas_noticias(),}
 
 def enviarEmailComentario(obj):	
 	titulo = 'Novo mensagem recebida pelo site'
@@ -15,49 +16,64 @@ def enviarEmailComentario(obj):
 	send_mail(subject=titulo, message=texto, from_email=destino, recipient_list=[destino],	)
 
 def home(request):
-	if request.method == 'POST':
-		return create(request)
-	else:
-		return new(request)
-	
-def new(request):
-	context = {
-				'origem':'novo',
-				'sobre':Sobre.objects.ultimo_sobre(),
-				'noticias':Noticia.objects.ultimas_noticias(),
-				'fotos':Photo.objects.ultimas_fotos(),
-				'carrosel':Photo.objects.carrosel_fotos(),
-				'form':ContatoForm(),
-				}
+	c = {
+		'fotos':Photo.objects.ultimas_fotos(),
+		'carrosel':Photo.objects.carrosel_fotos(),
+		'aulas':HorarioAulas.objects.all(),
+		}
+	context = dict(c.items() + G_CONTEXT.items())
 	return render(request, 'index.html', context)
 
-def create(request):
-	form = ContatoForm(request.POST)
-	context = {
-				'origem':'criando',
-				'form':form,
-				}
-	if not form.is_valid():
-		return render(request, 'index.html', context)
+	
+def equipe(request):
+	c = {
+		'equipe':Equipe.objects.all().order_by('dataCadastro'),
+		}
+	context = dict(c.items() + G_CONTEXT.items())
+	return render(request, 'equipe.html', context)
 
-	obj = form.save()
-	enviarEmailComentario(obj)	
-	return HttpResponseRedirect('/contato/%d/' % obj.pk)
 	
-def contato(request, pk):
+def modalidades(request):
+	c = {
+		'modalidades':Modalidades.objects.all().order_by('modalidade'),
+		}
+	context = dict(c.items() + G_CONTEXT.items())
+	return render(request, 'modalidades.html', context)
+
+
+def contato(request):	
+	if request.method == 'POST':
+		form = ContatoForm(request.POST)
+		if not form.is_valid():
+			return render(request, 'contato.html', {'form':form} )
+
+		obj = form.save()
+		enviarEmailComentario(obj)	
+		return HttpResponseRedirect('/contato_sucesso/%d/' % obj.pk)
+		
+	else:
+		c = {'form':ContatoForm()}
+		context = dict(c.items() + G_CONTEXT.items())
+		return render(request, 'contato.html',  context)
+
+def contato_sucesso(request, pk):
 	contato = get_object_or_404(Contato, pk=pk)
-	return render(request, 'contato_sucesso.html', {'contato':contato})
-	
+	c = {'contato':contato}
+	context = dict(c.items() + G_CONTEXT.items())
+	return render(request, 'contato_sucesso.html', context)
+
 def noticias(request):
-	context = {
-				'noticias':Noticia.objects.order_by('-dataAlteracao'),
-				}
+	c = {
+		'noticias':Noticia.objects.order_by('-dataAlteracao'),
+		}
+	context = dict(c.items() + G_CONTEXT.items())
 	return render(request, 'noticias.html', context)
 	
 def noticia(request, slug):
-	context = {
-				'noticia':Noticia.objects.filter(slug=slug)
-				}
+	c = {
+		'noticia':Noticia.objects.filter(slug=slug)
+		}
+	context = dict(c.items() + G_CONTEXT.items())
 	return render(request, 'exibeNoticia.html', context)
 
 '''
@@ -75,6 +91,13 @@ def arquivos(request):
 def galeria(request):
 	context = dict( backend_form = PhotoForm())
 
+	c = {
+			'form':PhotoForm, 
+			'photo':Photo.objects.order_by('-dataCadastro'), 
+			'log':request.user.is_authenticated()
+		}
+	context = dict(c.items() + G_CONTEXT.items())
+	
 	#print([e.image for e in Photo.objects.all()])
 	if request.method == 'POST':
 		form = PhotoForm(request.POST, request.FILES)
@@ -86,4 +109,4 @@ def galeria(request):
 		if form.is_valid():
 			form.save()
 		'''
-	return render(request, 'arquivos.html', {'form':PhotoForm, 'photo':Photo.objects.order_by('-dataCadastro'), 'log':request.user.is_authenticated()})
+	return render(request, 'galeria.html', context)

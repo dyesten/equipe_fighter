@@ -1,0 +1,68 @@
+﻿{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content%}
+		<div class="row-fluid">
+            <div class="span12">
+                <div id="headerSeparator"></div>
+            </div>
+        </div>
+    </div>
+	
+    <div class="contentArea">
+
+        <div class="divPanel notop page-content">
+
+            <div class="breadcrumbs">
+                <a href="/">Home</a> &nbsp;/&nbsp; <span>Contato</span>
+            </div>
+            	
+            <div class="row-fluid">
+                <div class="span8" id="divMain">
+
+                    <h1>Contato</h1>
+                   	
+					<hr>
+			<!--Start Contact form -->		                                                
+
+					<form action="." id="form_contato" method="POST" style="display:block;">
+					  <fieldset>
+						
+						{% csrf_token %}    
+						  {{ form.non_field_errors }}
+							
+								{{ form.nome|add_class:"input-block-level"|attr:"placeholder:Seu Nome"}}
+								{{ form.nome.errors }}
+								
+								{{ form.email|add_class:"input-block-level"|attr:"placeholder:Email"}}
+								{{ form.email.errors }}
+							  
+								{{ form.telefone|add_class:"input-block-level"|attr:"placeholder:Telefone"}}
+								{{ form.telefone.errors }}
+								
+								{{ form.comentario|add_class:"input-block-level"|attr:"placeholder:Comentario"}}
+								{{ form.comentario.errors }}
+						
+						<div class="actions">
+							<input type="submit" value="Enviar" name="submit" id="submitButton" class="btn btn-info pull-right" title="Clique para enviar sua mensagem" />
+						</div>
+						
+						</fieldset>
+					</form>  				 
+			<!--End Contact form -->											 
+                </div>
+				
+				
+            </div>			
+
+            <div id="footerInnerSeparator"></div>
+        </div>
+    </div>
+
+    <div id="footerOuterSeparator"></div>
+
+{% endblock content%}
+
+{% block script%}
+<script>$(document).ready(function(){$("#menubar li").removeClass();$("#contato").attr('class', 'active');});</script>
+{% endblock script%}

@@ -75,7 +75,46 @@ class Photo(models.Model):
 	class Meta:
 		verbose_name = _('imagem')
 		verbose_name_plural = _('imagens')
+
+class Equipe(models.Model):
+	foto = CloudinaryField('foto', null=True, blank=True)
+	nome = models.CharField(max_length=100, null=False, blank=False)
+	descricao = models.TextField()
+	dataCadastro = models.DateTimeField(auto_now_add=True)
 	
+	def __unicode__(self):
+		return self.nome
+	
+	class Meta:
+		verbose_name = _('membro')
+		verbose_name_plural = _('membros')
+		
+class HorarioAulas(models.Model):
+	modalidade = models.CharField(max_length=100, null=False, blank=False)
+	descricao = models.TextField()
+	dataCadastro = models.DateTimeField(auto_now_add=True)
+	dataAlteracao = models.DateTimeField(auto_now=True)
+	
+	def __unicode__(self):
+		return self.modalidade
+	
+	class Meta:
+		verbose_name = _('aula')
+		verbose_name_plural = _('aulas')
+
+class Modalidades(models.Model):
+	imagem = CloudinaryField('imagem', null=True, blank=True)
+	modalidade = models.CharField(max_length=100, null=False, blank=False)
+	descricao = models.TextField()
+	dataCadastro = models.DateTimeField(auto_now_add=True)
+	dataAlteracao = models.DateTimeField(auto_now=True)
+	
+	def __unicode__(self):
+		return self.modalidade
+	
+	class Meta:
+		verbose_name = _('modalidade')
+		verbose_name_plural = _('modalidades')
 '''
 class FilaTeste(models.Model):
 	name = models.CharField(_('Nome'), max_length=255)

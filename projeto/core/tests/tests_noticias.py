@@ -2,7 +2,7 @@
 from django.test import TestCase
 from projeto.core.forms import ContatoForm
 
-class HomeTest(TestCase):
+class NoticiasTest(TestCase):
 	def setUp(self):
 		self.resp = self.client.get('/noticias/')
 	
@@ -11,5 +11,5 @@ class HomeTest(TestCase):
 	
 	def test_template(self):
 		self.assertTemplateUsed(self.resp, 'noticias.html')
-	
+
 	

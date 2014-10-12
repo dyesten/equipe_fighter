@@ -1,6 +1,6 @@
 # coding: latin
 from django.contrib import admin
-from projeto.core.models import Sobre, Noticia, Photo
+from projeto.core.models import Sobre, Noticia, Photo, Equipe, Modalidades, HorarioAulas
 from projeto.core.forms import PhotoForm
 from django.utils.translation import ungettext, ugettext as _
 
@@ -125,10 +125,47 @@ class PhotoAdmin(admin.ModelAdmin):
 	
 	#https://lincolnloop.com/static/slides/2010-djangocon/customizing-the-admin.html#slide61
 	#change_list_template = 'diretorio_templates_projeto/nome_template.html'
+
+
+class EquipeAdmin(admin.ModelAdmin):
+	fieldsets = [
+		('Membro', {'fields':['nome', 'descricao', 'foto']}),
+	]
 	
+	list_display = ('nome', 'descricao', 'dataCadastro')
+	list_filter = ['dataCadastro']
+	search_fields = ['nome', 'descricao']
+	
+	list_per_page = 10
+
+	
+class HorarioAulasAdmin(admin.ModelAdmin):
+	fieldsets = [
+		('Modalidade', {'fields':['modalidade', 'descricao']}),
+	]
+	
+	list_display = ('modalidade', 'descricao', 'dataCadastro')
+	list_filter = ['dataCadastro']
+	search_fields = ['modalidade', 'descricao']
+	
+	list_per_page = 10
+	
+class ModalidadesAdmin(admin.ModelAdmin):
+	fieldsets = [
+		('Aulas', {'fields':['modalidade', 'descricao', 'imagem']}),
+	]
+	
+	list_display = ('modalidade', 'descricao', 'dataCadastro')
+	list_filter = ['dataCadastro']
+	search_fields = ['modalidade', 'descricao']
+	
+	list_per_page = 10
 	
 admin.site.register(Sobre, SobreAdmin)
 admin.site.register(Noticia, NoticiasAdmin)
 admin.site.register(Photo, PhotoAdmin)
+admin.site.register(Equipe, EquipeAdmin)
+admin.site.register(HorarioAulas, HorarioAulasAdmin)
+admin.site.register(Modalidades, ModalidadesAdmin)
 
 #admin.site.register(FilaTeste, FilaTesteAdmin)
