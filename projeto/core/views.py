@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
+from django.views.generic import DetailView, TemplateView
 
 from projeto.core.forms import ContatoForm, PhotoForm
 from projeto.core.models import Sobre, Contato, Noticia, Photo, Equipe, Modalidades, HorarioAulas
@@ -13,7 +14,7 @@ def enviarEmailComentario(obj):
 	destino = 'dyesten.pt@gmail.com'
 	texto = "\nNome: "+(obj.nome)+" \nE-mail: "+(obj.email)+" \nMensagem: "+(obj.comentario)
 	
-	send_mail(subject=titulo, message=texto, from_email=destino, recipient_list=[destino],	)
+	#send_mail(subject=titulo, message=texto, from_email=destino, recipient_list=[destino],	)
 
 def home(request):
 	c = {
@@ -30,7 +31,7 @@ def equipe(request):
 		'equipe':Equipe.objects.all().order_by('dataCadastro'),
 		}
 	context = dict(c.items() + G_CONTEXT.items())
-	return render(request, 'equipe.html', context)
+	return render(request, 'core/equipe.html', context)
 
 	
 def modalidades(request):
@@ -38,14 +39,14 @@ def modalidades(request):
 		'modalidades':Modalidades.objects.all().order_by('modalidade'),
 		}
 	context = dict(c.items() + G_CONTEXT.items())
-	return render(request, 'modalidades.html', context)
+	return render(request, 'core/modalidades.html', context)
 
 
 def contato(request):	
 	if request.method == 'POST':
 		form = ContatoForm(request.POST)
 		if not form.is_valid():
-			return render(request, 'contato.html', {'form':form} )
+			return render(request, 'core/contato.html', {'form':form} )
 
 		obj = form.save()
 		enviarEmailComentario(obj)	
@@ -54,27 +55,37 @@ def contato(request):
 	else:
 		c = {'form':ContatoForm()}
 		context = dict(c.items() + G_CONTEXT.items())
-		return render(request, 'contato.html',  context)
+		return render(request, 'core/contato.html',  context)
 
+'''
 def contato_sucesso(request, pk):
 	contato = get_object_or_404(Contato, pk=pk)
 	c = {'contato':contato}
 	context = dict(c.items() + G_CONTEXT.items())
 	return render(request, 'contato_sucesso.html', context)
+'''
+class ContatoSucesso(DetailView):
+	model = Contato
+	
+	def get_context_data(self, **kwargs):
+		context = super(ContatoSucesso, self).get_context_data(**kwargs)
+		context = dict(context.items() + G_CONTEXT.items())
+		return context
+	
 
 def noticias(request):
 	c = {
 		'noticias':Noticia.objects.order_by('-dataAlteracao'),
 		}
 	context = dict(c.items() + G_CONTEXT.items())
-	return render(request, 'noticias.html', context)
+	return render(request, 'core/noticias.html', context)
 	
 def noticia(request, slug):
 	c = {
 		'noticia':Noticia.objects.filter(slug=slug)
 		}
 	context = dict(c.items() + G_CONTEXT.items())
-	return render(request, 'exibeNoticia.html', context)
+	return render(request, 'core/exibeNoticia.html', context)
 
 '''
 def galeria(request):
@@ -109,4 +120,4 @@ def galeria(request):
 		if form.is_valid():
 			form.save()
 		'''
-	return render(request, 'galeria.html', context)
+	return render(request, 'core/galeria.html', context)

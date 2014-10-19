@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from projeto.core.views import ContatoSucesso
 
 from django.contrib import admin
 admin.autodiscover()
@@ -11,7 +12,7 @@ urlpatterns = patterns('projeto.core.views',
     url(r'^contato/$', 'contato', name='contato'),
 	url(r'^noticias/$', 'noticias', name='noticias'),
 	url(r'^galeria/$', 'galeria', name='galeria'),
-	url(r'^contato_sucesso/(\d+)/$', 'contato_sucesso', name='contato_sucesso'),
+	url(r'^contato_sucesso/(?P<pk>\d+)/$', ContatoSucesso.as_view(), name='contato_sucesso'),
 	url(r'^noticia/(?P<slug>[a-zA-Z0-9-_\.]+)/$', 'noticia', name='noticia'),
 	
     url(r'^admin/', include(admin.site.urls)),
