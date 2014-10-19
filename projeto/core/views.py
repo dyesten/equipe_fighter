@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.core import serializers
 from django.core.mail import send_mail
 from django.views.generic import DetailView, TemplateView
 
@@ -14,8 +15,29 @@ def enviarEmailComentario(obj):
 	destino = 'dyesten.pt@gmail.com'
 	texto = "\nNome: "+(obj.nome)+" \nE-mail: "+(obj.email)+" \nMensagem: "+(obj.comentario)
 	
-	#send_mail(subject=titulo, message=texto, from_email=destino, recipient_list=[destino],	)
+	send_mail(subject=titulo, message=texto, from_email=destino, recipient_list=[destino],	)
 
+def get_sobre(request):
+	sobre = Sobre.objects.ultimo_sobre()
+	sobre = serializers.serialize("json",  sobre)
+	return HttpResponse(sobre, mimetype="text/javascript")
+
+def get_top5_noticias(request):
+	noticias = Noticia.objects.ultimas_noticias()
+	noticias = serializers.serialize("json",  noticias)
+	return HttpResponse(noticias, mimetype="text/javascript")
+
+'''
+def hello(request):
+	c = {
+		'fotos':Photo.objects.ultimas_fotos(),
+		'carrosel':Photo.objects.carrosel_fotos(),
+		'aulas':HorarioAulas.objects.all(),
+		}
+	context = dict(c.items() + G_CONTEXT.items())
+	return context
+'''	
+	
 def home(request):
 	c = {
 		'fotos':Photo.objects.ultimas_fotos(),
@@ -23,7 +45,8 @@ def home(request):
 		'aulas':HorarioAulas.objects.all(),
 		}
 	context = dict(c.items() + G_CONTEXT.items())
-	return render(request, 'index.html', context)
+	
+	return render(request, 'index.html')
 
 	
 def equipe(request):

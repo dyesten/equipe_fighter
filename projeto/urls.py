@@ -7,6 +7,9 @@ admin.autodiscover()
 urlpatterns = patterns('projeto.core.views',
     # Examples:
     url(r'^$', 'home', name='home'),
+	url(r'^get_sobre/$', 'get_sobre', name='get_sobre'),
+	url(r'^get_top5_noticias/$', 'get_top5_noticias', name='get_top5_noticias'),
+	
     url(r'^equipe/$', 'equipe', name='equipe'),
     url(r'^modalidades/$', 'modalidades', name='modalidades'),
     url(r'^contato/$', 'contato', name='contato'),
