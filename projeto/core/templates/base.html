@@ -183,16 +183,11 @@
 		dataType: "json",
 		success: function(retorno){
 			$.each(retorno, function(i, item){
-				
-				data = new Date(item.fields.dataAlteracao);
-				
-				dataPub = data.toString('dd') + ' de ' + data.toString('MM') +' de ' + data.toString('yyyy');
-				//console.log(dataPub);
-				//.format("dd-m-yy")
+				data = item.fields.dataAlteracao.substr(0, 10);
+				data = data.substr(8,2)+'/'+data.substr(5,2)+'/'+data.substr(0,4);
 				
 				tag = '<p><a href="noticia/'+item.fields.slug+'" title=""> '+item.fields.titulo+'</a><br />';
-				tag += '<span style="text-transform:none;">Postado em '+item.fields.dataAlteracao;
-				tag +=' de '+item.fields.dataAlteracao+' de '+item.fields.slug.dataAlteracao+' as '+item.fields.dataAlteracao+'</span></p>'				
+				tag += '<span style="text-transform:none;">Postado em '+data;
 				$("#topNoticias").append(tag);
 			});
 		}
