@@ -8,7 +8,7 @@ from projeto.core.forms import ContatoForm, PhotoForm
 from projeto.core.models import Sobre, Contato, Noticia, Photo, Equipe, Modalidades, HorarioAulas
 #from cloudinary.forms import cl_init_js_callbacks
 
-G_CONTEXT = {'sobre':Sobre.objects.ultimo_sobre(), 'noticias':Noticia.objects.ultimas_noticias(),}
+#G_CONTEXT = {'sobre':Sobre.objects.ultimo_sobre(), 'noticias':Noticia.objects.ultimas_noticias(),}
 
 def enviarEmailComentario(obj):	
 	titulo = 'Novo mensagem recebida pelo site'
@@ -20,16 +20,16 @@ def enviarEmailComentario(obj):
 def get_sobre(request):
 	sobre = Sobre.objects.ultimo_sobre()
 	sobre = serializers.serialize("json",  sobre)
-	return HttpResponse(sobre, mimetype="text/javascript")
+	return HttpResponse(sobre, content_type="text/javascript")
 
 def get_top5_noticias(request):
 	noticias = Noticia.objects.ultimas_noticias()
 	noticias = serializers.serialize("json",  noticias)
-	return HttpResponse(noticias, mimetype="text/javascript")
+	return HttpResponse(noticias, content_type="text/javascript")
 
 '''
 def hello(request):
-	c = {
+	context = {
 		'fotos':Photo.objects.ultimas_fotos(),
 		'carrosel':Photo.objects.carrosel_fotos(),
 		'aulas':HorarioAulas.objects.all(),
@@ -39,29 +39,26 @@ def hello(request):
 '''	
 	
 def home(request):
-	c = {
+	context = {
 		'fotos':Photo.objects.ultimas_fotos(),
 		'carrosel':Photo.objects.carrosel_fotos(),
 		'aulas':HorarioAulas.objects.all(),
 		}
-	context = dict(c.items() + G_CONTEXT.items())
 	
-	return render(request, 'index.html')
+	return render(request, 'index.html', context)
 
 	
 def equipe(request):
-	c = {
+	context = {
 		'equipe':Equipe.objects.all().order_by('dataCadastro'),
 		}
-	context = dict(c.items() + G_CONTEXT.items())
 	return render(request, 'core/equipe.html', context)
 
 	
 def modalidades(request):
-	c = {
+	context = {
 		'modalidades':Modalidades.objects.all().order_by('modalidade'),
 		}
-	context = dict(c.items() + G_CONTEXT.items())
 	return render(request, 'core/modalidades.html', context)
 
 
@@ -76,14 +73,13 @@ def contato(request):
 		return HttpResponseRedirect('/contato_sucesso/%d/' % obj.pk)
 		
 	else:
-		c = {'form':ContatoForm()}
-		context = dict(c.items() + G_CONTEXT.items())
+		context = {'form':ContatoForm()}
 		return render(request, 'core/contato.html',  context)
 
 '''
 def contato_sucesso(request, pk):
 	contato = get_object_or_404(Contato, pk=pk)
-	c = {'contato':contato}
+	context = {'contato':contato}
 	context = dict(c.items() + G_CONTEXT.items())
 	return render(request, 'contato_sucesso.html', context)
 '''
@@ -92,22 +88,19 @@ class ContatoSucesso(DetailView):
 	
 	def get_context_data(self, **kwargs):
 		context = super(ContatoSucesso, self).get_context_data(**kwargs)
-		context = dict(context.items() + G_CONTEXT.items())
 		return context
 	
 
 def noticias(request):
-	c = {
+	context = {
 		'noticias':Noticia.objects.order_by('-dataAlteracao'),
 		}
-	context = dict(c.items() + G_CONTEXT.items())
 	return render(request, 'core/noticias.html', context)
 	
 def noticia(request, slug):
-	c = {
+	context = {
 		'noticia':Noticia.objects.filter(slug=slug)
 		}
-	context = dict(c.items() + G_CONTEXT.items())
 	return render(request, 'core/exibeNoticia.html', context)
 
 '''
@@ -125,12 +118,11 @@ def arquivos(request):
 def galeria(request):
 	context = dict( backend_form = PhotoForm())
 
-	c = {
+	context = {
 			'form':PhotoForm, 
 			'photo':Photo.objects.order_by('-dataCadastro'), 
 			'log':request.user.is_authenticated()
 		}
-	context = dict(c.items() + G_CONTEXT.items())
 	
 	#print([e.image for e in Photo.objects.all()])
 	if request.method == 'POST':
