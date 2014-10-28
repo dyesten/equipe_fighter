@@ -12,7 +12,7 @@ from projeto.core.models import Sobre, Contato, Noticia, Photo, Equipe, Modalida
 
 def enviarEmailComentario(obj):	
 	titulo = 'Novo mensagem recebida pelo site'
-	destino = 'dyesten.pt@gmail.com'
+	destino = 'thaiboxingfera@hotmail.com'
 	texto = "\nNome: "+(obj.nome)+" \nE-mail: "+(obj.email)+" \nMensagem: "+(obj.comentario)
 	
 	send_mail(subject=titulo, message=texto, from_email=destino, recipient_list=[destino],	)
