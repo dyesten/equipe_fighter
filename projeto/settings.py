@@ -92,6 +92,7 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
 )
 
 SUIT_CONFIG = {
+	'ADMIN_NAME': 'Equipe Fighter',
     'SEARCH_URL': '/admin/user',
     # Parameter also accepts url name
     'SEARCH_URL': 'admin:auth_user_changelist',
