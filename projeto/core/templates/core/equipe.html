@@ -37,12 +37,21 @@
 					<h3>Equipe</h3>
 					
 					{% for e in equipe %}
-					<div class="row-fluid">		
+					<div class="row-fluid">
 						<div class="span2">
-							<img src="http://res.cloudinary.com/fighter/image/upload/c_thumb,g_face,r_max,h_210,w_200/v1413080453/{{e.foto}}.jpg" style="margin:5px 0px 15px;" alt="">
+							{% if e.foto %}
+								<img src="http://res.cloudinary.com/fighter/image/upload/c_thumb,g_face,r_max,h_210,w_200/v1413080453/{{e.foto}}.jpg" style="margin:5px 0px 15px;" alt="">
+							{% else %}
+								&nbsp;&nbsp;
+							{% endif %}
 						</div>
 						<div class="span10">
 							<p><strong>{{e.nome}}</strong></p>
+							{% if e.facebook %}
+								<p class="social_bookmarks">
+									<a href="{{e.facebook}}" style="color:#3B5998;"><i class="social foundicon-facebook" style="color:#3B5998;"></i> Facebook</a>
+								</p>
+							{% endif %}
 							<p>{{e.descricao}}</p>
 						</div>		 
 					</div>

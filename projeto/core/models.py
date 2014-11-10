@@ -79,6 +79,7 @@ class Photo(models.Model):
 class Equipe(models.Model):
 	foto = CloudinaryField('foto', null=True, blank=True)
 	nome = models.CharField(max_length=100, null=False, blank=False)
+	facebook = models.CharField(max_length=250, null=True, blank=True)
 	descricao = models.TextField()
 	dataCadastro = models.DateTimeField(auto_now_add=True)
 	

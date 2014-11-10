@@ -129,7 +129,7 @@ class PhotoAdmin(admin.ModelAdmin):
 
 class EquipeAdmin(admin.ModelAdmin):
 	fieldsets = [
-		('Membro', {'fields':['nome', 'descricao', 'foto']}),
+		('Membro', {'fields':['nome', 'descricao', 'facebook', 'foto']}),
 	]
 	
 	list_display = ('nome', 'descricao', 'dataCadastro')
