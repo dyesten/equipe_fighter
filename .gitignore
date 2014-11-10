@@ -15,4 +15,4 @@ scripts
 *.sqlite3
 .DS_Store
 .env
-eventex/staticfiles
+projeto/staticfiles
