@@ -41,7 +41,7 @@ def hello(request):
 def home(request):
 	context = {
 		'fotos':Photo.objects.ultimas_fotos(),
-		'carrosel':Photo.objects.carrosel_fotos().order_by('-dataCadastro'),
+		'carrosel':Photo.objects.carrosel_fotos().order_by('dataCadastro'),
 		'aulas':HorarioAulas.objects.all(),
 		}
 	
