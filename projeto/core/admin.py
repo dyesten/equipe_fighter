@@ -14,6 +14,12 @@ class SobreAdmin(admin.ModelAdmin):
 		('Informe a descrição', {'fields':['descricao']}),
 	]
 
+	#se houver um ou mais de um, ele nao permite adicionar mais
+	def has_add_permission(self, request):
+		if(Sobre.objects.count() >= 1):
+			return False
+		return True
+
 
 class NoticiasAdmin(admin.ModelAdmin):
 	fieldsets = [
@@ -45,7 +51,7 @@ class PhotoAdmin(admin.ModelAdmin):
 	actions = ['delete_imgs']
 	
 	fieldsets = [	
-		('Selecione uma imagem', {'fields':['image', 'carrosel']} ),
+		('Selecione uma imagem', {'fields':['image', 'comentario','carrosel']} ),
 	]
 	list_display = ('imagemImg','dataCadastro','imagemCarrosel', )
 	list_per_page = 10

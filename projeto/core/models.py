@@ -65,6 +65,7 @@ class Contato(models.Model):
 class Photo(models.Model):
 	image = CloudinaryField('image', null=True, blank=True)
 	dataCadastro = models.DateTimeField(auto_now_add=True)
+	comentario = models.TextField(null=True, blank=True)
 	carrosel = models.BooleanField()
 	
 	objects = PhotosManager()

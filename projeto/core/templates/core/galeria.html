@@ -19,7 +19,7 @@
                 <a href="/">Home</a> &nbsp;/&nbsp; <span>Galeria</span>
             </div>
 
-            <!--Edit Portfolio Content Area here-->			
+            <!--Edit Portfolio Content Area here-->
             <div class="row-fluid">
 				<div class="span12">
 					<h1>Galeria</h1>
@@ -30,7 +30,7 @@
 									<li class="span3">
 										<div class="thumbnail">
 											<a href='http://res.cloudinary.com/fighter/image/upload/{{img.image}}.jpg'>
-												<img src="http://res.cloudinary.com/fighter/image/upload/w_300,h_200/{{img.image}}.jpg" />
+												<img src="http://res.cloudinary.com/fighter/image/upload/w_300,h_200/{{img.image}}.jpg" alt="Thumbnail Placeholder" title="{{img.comentario|default_if_none:''}}" />
 											</a>
 										</div>
 									</li>
@@ -69,7 +69,9 @@
 <script src="{{STATIC_URL}}scripts/yoxview/jquery.yoxview-2.21.js" type="text/javascript"></script>
 <!--<script src="{{STATIC_URL}}scripts/yoxview/yoxview-init.js" type="text/javascript"></script>-->
 <script type="text/javascript">$(document).ready(function () {$('.yoxview').yoxview({autoHideInfo:false,renderInfoPin:false,backgroundColor:'#ffffff',backgroundOpacity:0.8,infoBackColor:'#000000',infoBackOpacity:1});$('.yoxview a img').hover(function(){$(this).animate({opacity:0.7},300)},function(){$(this).animate({opacity:1},300)});});</script>
-<script type="text/javascript">$(document).ready(function () {	$("#yoxview_infoPanel").hide();});</script>
+
+<!--<script type="text/javascript">$(document).ready(function () {	$("#yoxview_infoPanel").hide();});</script>-->
 <script>$(document).ready(function(){$("#menubar li").removeClass();$("#galeria").attr('class', 'active');});</script>
+
 
 {% endblock script%}
