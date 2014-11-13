@@ -132,7 +132,7 @@ class PhotoAdmin(admin.ModelAdmin):
 	#https://lincolnloop.com/static/slides/2010-djangocon/customizing-the-admin.html#slide61
 	#change_list_template = 'diretorio_templates_projeto/nome_template.html'
 
-
+'''
 class EquipeAdmin(admin.ModelAdmin):
 	fieldsets = [
 		('Membro', {'fields':['nome', 'descricao', 'facebook', 'foto']}),
@@ -143,7 +143,63 @@ class EquipeAdmin(admin.ModelAdmin):
 	search_fields = ['nome', 'descricao']
 	
 	list_per_page = 10
+'''
 
+class EquipeAdmin(admin.ModelAdmin):
+	#actions = None #desabilita todas as acoes
+	actions = ['delete_imgs']
+	
+	fieldsets = [
+		('Membro', {'fields':['nome', 'descricao', 'facebook', 'foto']}),
+	]
+	list_display = ('nome', 'descricao', 'dataCadastro')
+	list_filter = ['dataCadastro']
+	search_fields = ['nome', 'descricao']
+	list_per_page = 10
+	
+	
+	def save_model(self, request, obj, form, change):
+		#se for de uma alteracao, apagar o arquivo e subir de novo no cloudinary.
+		if change and 'foto' in form.changed_data:
+			img = Equipe.objects.get(id=obj.id)
+			#invalidate = True, forca uma invalidacao no cache, caso ocorra o carregamento de uma imagem e possa gerar a mesma id
+			cloudinary.uploader.destroy(img.foto.public_id, invalidate = True)
+		
+		super(EquipeAdmin, self).save_model(request, obj, form, change)
+		
+	def delete_model(self, request, obj):
+		img = Equipe.objects.get(id=obj.id)
+		#deleta imagem no cloudinary e posteriormente do bd
+		if img.foto:
+			cloudinary.uploader.destroy(img.foto.public_id, invalidate = True)
+		img.delete()
+
+	#limpa a action padrao delete_selected
+	def get_actions(self, request):
+		actions = super(EquipeAdmin, self).get_actions(request)
+		del actions['delete_selected']
+		return actions
+	
+	#action delete imagens
+	def delete_imgs(self, request, obj):
+		qtd = len(obj)
+		for o in obj.all():
+			img = Equipe.objects.get(id=o.id)
+			#deleta imagem no cloudinary e posteriormente do bd
+			if img.foto:
+				cloudinary.uploader.destroy(img.foto.public_id, invalidate = True)
+				
+			img.delete()
+		
+		msg = ungettext(
+			u'%d membro foi apagado.',
+			u'%d membros foram apagados.',
+			qtd
+		)
+		self.message_user(request, msg % qtd)
+		
+	delete_imgs.short_description = 'Deletar modalidades selecionadas'
+	
 	
 class HorarioAulasAdmin(admin.ModelAdmin):
 	fieldsets = [
@@ -155,7 +211,8 @@ class HorarioAulasAdmin(admin.ModelAdmin):
 	search_fields = ['modalidade', 'descricao']
 	
 	list_per_page = 10
-	
+
+'''
 class ModalidadesAdmin(admin.ModelAdmin):
 	fieldsets = [
 		('Aulas', {'fields':['modalidade', 'descricao', 'imagem']}),
@@ -166,7 +223,63 @@ class ModalidadesAdmin(admin.ModelAdmin):
 	search_fields = ['modalidade', 'descricao']
 	
 	list_per_page = 10
+'''
+
+class ModalidadesAdmin(admin.ModelAdmin):
+	#actions = None #desabilita todas as acoes
+	actions = ['delete_imgs']
 	
+	fieldsets = [
+		('Aulas', {'fields':['modalidade', 'descricao', 'imagem']}),
+	]
+	list_display = ('modalidade', 'descricao', 'dataCadastro')
+	list_per_page = 10
+	
+	
+	def save_model(self, request, obj, form, change):
+		#se for de uma alteracao, apagar o arquivo e subir de novo no cloudinary.
+		if change and 'imagem' in form.changed_data:
+			img = Modalidades.objects.get(id=obj.id)
+			if(img.imagem):
+				#invalidate = True, forca uma invalidacao no cache, caso ocorra o carregamento de uma imagem e possa gerar a mesma id
+				cloudinary.uploader.destroy(img.imagem.public_id, invalidate = True)
+		
+		super(ModalidadesAdmin, self).save_model(request, obj, form, change)
+		
+	def delete_model(self, request, obj):
+		img = Modalidades.objects.get(id=obj.id)
+		#deleta imagem no cloudinary e posteriormente do bd
+		if img.imagem:
+			cloudinary.uploader.destroy(img.imagem.public_id, invalidate = True)
+		img.delete()
+
+	#limpa a action padrao delete_selected
+	def get_actions(self, request):
+		actions = super(ModalidadesAdmin, self).get_actions(request)
+		del actions['delete_selected']
+		return actions
+	
+	#action delete imagens
+	def delete_imgs(self, request, obj):
+		qtd = len(obj)
+		for o in obj.all():
+			img = Modalidades.objects.get(id=o.id)
+			#deleta imagem no cloudinary e posteriormente do bd
+			if img.imagem:
+				cloudinary.uploader.destroy(img.imagem.public_id, invalidate = True)
+				
+			img.delete()
+		
+		msg = ungettext(
+			u'%d modalidade foi apagada.',
+			u'%d modalidades foram apagadas.',
+			qtd
+		)
+		self.message_user(request, msg % qtd)
+		
+	delete_imgs.short_description = 'Deletar modalidades selecionadas'
+
+
 admin.site.register(Sobre, SobreAdmin)
 admin.site.register(Noticia, NoticiasAdmin)
 admin.site.register(Photo, PhotoAdmin)
