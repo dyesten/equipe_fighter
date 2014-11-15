@@ -28,7 +28,7 @@
 					<form action="." id="form_contato" method="POST" style="display:block;">
 					  <fieldset>
 						
-						{% csrf_token %}    
+						{% csrf_token %}
 						  {{ form.non_field_errors }}
 							
 								{{ form.nome|add_class:"input-block-level"|attr:"placeholder:Seu Nome"}}
@@ -64,5 +64,6 @@
 {% endblock content%}
 
 {% block script%}
-<script>$(document).ready(function(){$("#menubar li").removeClass();$("#contato").attr('class', 'active');});</script>
+<script>$(document).ready(function(){$("#menubar li").removeClass();$("#contato").attr('class', 'active');
+$('.errorlist').css('color','red');});</script>
 {% endblock script%}

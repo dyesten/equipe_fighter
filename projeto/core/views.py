@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core import serializers
 from django.core.mail import send_mail
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView, TemplateView
 
 from projeto.core.forms import ContatoForm, PhotoForm
@@ -117,10 +118,22 @@ def arquivos(request):
 
 def galeria(request):
 	context = dict( backend_form = PhotoForm())
-
+	
+	fotos_album = Photo.objects.order_by('-dataCadastro')
+	paginator = Paginator(fotos_album, 12)
+	
+	try:
+		fotos = paginator.page(request.GET.get('page'))
+	except PageNotAnInteger:
+		# If page is not an integer, deliver first page.
+		fotos = paginator.page(1)
+	except EmptyPage:
+		# If page is out of range (e.g. 9999), deliver last page of results.
+		fotos = paginator.page(paginator.num_pages)
+	
 	context = {
 			'form':PhotoForm, 
-			'photo':Photo.objects.order_by('-dataCadastro'), 
+			'photo':fotos, 
 			'log':request.user.is_authenticated()
 		}
 	

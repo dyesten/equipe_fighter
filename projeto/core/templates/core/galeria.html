@@ -23,6 +23,7 @@
             <div class="row-fluid">
 				<div class="span12">
 					<h1>Galeria</h1>
+					
 					<div class="yoxview">					
 						<div class="row-fluid">
 							<ul class="thumbnails">
@@ -30,7 +31,7 @@
 									<li class="span3">
 										<div class="thumbnail">
 											<a href='http://res.cloudinary.com/fighter/image/upload/{{img.image}}.jpg'>
-												<img src="http://res.cloudinary.com/fighter/image/upload/w_300,h_200/{{img.image}}.jpg" alt="Thumbnail Placeholder" title="{{img.comentario|default_if_none:''}}" />
+												<img src="http://res.cloudinary.com/fighter/image/upload/w_300,h_200/{{img.image}}.jpg" alt="Thumbnail Placeholder" title="<div style='background-color:red;' class='fb-like'></div>{{img.comentario|default_if_none:''}}" />
 											</a>
 										</div>
 									</li>
@@ -47,7 +48,29 @@
 				</div>
             </div>
 			<!--/End Portfolio Content Area-->
-
+			<div class="row text-center">
+				<div class="pagination pagination-centered">
+				
+					<ul>
+						{% if photo.has_previous %}
+							<!--<li><a href="?page={{ photo.previous_page_number }}">&laquo;</a></li>--><!--um a um -->
+							<li><a href="?page=1">&laquo;</a></li>
+						{% endif %}
+						{% for pg in photo.paginator.page_range %}
+							{% if photo.number == pg %}
+								<li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+							{% else %}
+								<li><a href="?page={{ pg }}">{{ pg }}</a></li>
+							{% endif %}
+						{% endfor %}
+						{% if photo.has_next %}
+							<li><a href="?page={{ photo.paginator.num_pages }}">&raquo;</a></li>
+						{% endif %}
+					</ul>
+				
+				</div>
+			</div>
+			
             <div id="footerInnerSeparator"></div>
         </div>
     </div>
@@ -72,6 +95,5 @@
 
 <!--<script type="text/javascript">$(document).ready(function () {	$("#yoxview_infoPanel").hide();});</script>-->
 <script>$(document).ready(function(){$("#menubar li").removeClass();$("#galeria").attr('class', 'active');});</script>
-
 
 {% endblock script%}

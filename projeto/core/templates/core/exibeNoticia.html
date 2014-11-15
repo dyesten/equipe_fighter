@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
+{% load disqus_tags %}
+
+{% disqus_dev %}
 
 {% block content%}
         <div class="row-fluid">
@@ -40,6 +43,7 @@
 				<!--End Main Content here-->
  
             </div>
+			{% disqus_show_comments %}
 
             <div id="footerInnerSeparator"></div>
         </div>

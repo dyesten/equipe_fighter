@@ -39,12 +39,17 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+	'django.contrib.sites',
 	'widget_tweaks',
 	'south',
 	'cloudinary',
 	'tinymce',
+	'disqus',
     'projeto.core',	
 )
+
+#ao adicionar o sites, eh necessario identificar a aplicacao com o id
+SITE_ID = 1
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -59,6 +64,8 @@ ROOT_URLCONF = 'projeto.urls'
 
 WSGI_APPLICATION = 'projeto.wsgi.application'
 
+DISQUS_API_KEY = config('DISQUS_API_KEY')
+DISQUS_WEBSITE_SHORTNAME = config('DISQUS_WEBSITE')
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
