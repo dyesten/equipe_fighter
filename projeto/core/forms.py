@@ -2,7 +2,7 @@
 from django import forms
 from projeto.core.models import Contato, Photo, Equipe, Modalidades
 
-from cloudinary.forms import CloudinaryJsFileField
+from cloudinary.forms import CloudinaryJsFileField, CloudinaryFileField
 
 
 class ContatoForm(forms.ModelForm):
@@ -19,7 +19,9 @@ class ContatoForm(forms.ModelForm):
 class PhotoForm(forms.ModelForm):
 	class Meta:
 		model = Photo
-	image = CloudinaryJsFileField()
+	
+	imagem = CloudinaryJsFileField() #CloudinaryFileField()
+
 	
 class EquipeForm(forms.ModelForm):
 	class Meta:

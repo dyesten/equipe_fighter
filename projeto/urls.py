@@ -15,6 +15,7 @@ urlpatterns = patterns('projeto.core.views',
     url(r'^contato/$', 'contato', name='contato'),
 	url(r'^noticias/$', 'noticias', name='noticias'),
 	url(r'^galeria/$', 'galeria', name='galeria'),
+    url(r'^parceiros/$', 'parceiros', name='parceiros'),
 	url(r'^contato_sucesso/(?P<pk>\d+)/$', ContatoSucesso.as_view(), name='contato_sucesso'),
 	url(r'^noticia/(?P<slug>[a-zA-Z0-9-_\.]+)/$', 'noticia', name='noticia'),
 	

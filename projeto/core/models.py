@@ -117,6 +117,20 @@ class Modalidades(models.Model):
 	class Meta:
 		verbose_name = _('modalidade')
 		verbose_name_plural = _('modalidades')
+
+class Parceiros(models.Model):
+	imagem = CloudinaryField('imagem', null=True, blank=True)
+	parceiro = models.CharField(max_length=100, null=False, blank=False)
+	descricao = models.TextField()
+	dataCadastro = models.DateTimeField(auto_now_add=True)
+	dataAlteracao = models.DateTimeField(auto_now=True)
+	
+	def __unicode__(self):
+		return self.parceiro
+	
+	class Meta:
+		verbose_name = _('parceiro')
+		verbose_name_plural = _('parceiros')
 '''
 class FilaTeste(models.Model):
 	name = models.CharField(_('Nome'), max_length=255)

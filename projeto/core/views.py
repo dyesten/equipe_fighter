@@ -6,7 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView, TemplateView
 
 from projeto.core.forms import ContatoForm, PhotoForm
-from projeto.core.models import Sobre, Contato, Noticia, Photo, Equipe, Modalidades, HorarioAulas
+from projeto.core.models import Sobre, Contato, Noticia, Photo, Equipe, Modalidades, HorarioAulas, Parceiros
 #from cloudinary.forms import cl_init_js_callbacks
 
 #G_CONTEXT = {'sobre':Sobre.objects.ultimo_sobre(), 'noticias':Noticia.objects.ultimas_noticias(),}
@@ -149,3 +149,9 @@ def galeria(request):
 			form.save()
 		'''
 	return render(request, 'core/galeria.html', context)
+
+def parceiros(request):
+	context = {
+		'parceiros':Parceiros.objects.all().order_by('parceiro'),
+	}
+	return render(request, 'core/parceiros.html', context)

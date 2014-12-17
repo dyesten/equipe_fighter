@@ -1,8 +1,10 @@
 # coding: latin
 from django.contrib import admin
-from projeto.core.models import Sobre, Noticia, Photo, Equipe, Modalidades, HorarioAulas
+from projeto.core.models import Sobre, Noticia, Photo, Equipe, Modalidades, HorarioAulas, Parceiros
 from projeto.core.forms import PhotoForm
 from django.utils.translation import ungettext, ugettext as _
+
+from django.core.files.uploadedfile import TemporaryUploadedFile
 
 #from django.conf.urls import patterns, include, url #utilizado no teste do PhotoAdmin
 #from django.template.response import TemplateResponse
@@ -69,6 +71,21 @@ class PhotoAdmin(admin.ModelAdmin):
 
 	
 	def save_model(self, request, obj, form, change):
+		
+		'''
+		#tests optmize images
+		#tmp = temp.gettempdir()
+		for f in request.FILES.getlist('image'):
+			#Image.open(tmp+'/'+f).save(+'/'+f,quality=30)
+			#print f
+			#print f.chunks()
+			print '-----------\n'
+			print f.TemporaryUploadedFile
+			#print f.TemporaryFileUploadHandler
+		
+		return
+		'''
+		
 		#for obj in obj: #olhar para habilitar com o multiple. no cloudinary ele inseriu, porque no BD nao?
 		#se for de uma alteracao, apagar o arquivo e subir de novo no cloudinary.
 		if change and 'image' in form.changed_data:
@@ -279,6 +296,54 @@ class ModalidadesAdmin(admin.ModelAdmin):
 		
 	delete_imgs.short_description = 'Deletar modalidades selecionadas'
 
+class ParceirosAdmin(admin.ModelAdmin):
+	actions = ['delete_parceiros']
+	fieldsets = [
+		('Aulas', {'fields':['parceiro', 'descricao', 'imagem']}),
+	]
+	list_display = ('parceiro', 'descricao', 'dataCadastro')
+	list_per_page = 10
+	
+	def save_model(self, request, obj, form, change):
+		#se for de uma alteracao, apagar o arquivo e subir de novo no cloudinary.
+		if change and 'imagem' in form.changed_data:
+			p = Parceiros.objects.get(id=obj.id)
+			if p.imagem:
+				#invalidate = True, forca uma invalidacao no cache, caso ocorra o carregamento de uma imagem e possa gerar a mesma id
+				cloudinary.uploader.destroy(p.imagem.public_id, invalidate = True)
+		
+		super(ParceirosAdmin, self).save_model(request, obj, form, change)
+	
+	def delete_model(self, request, obj):
+		p = Parceiros.objects.get(id=obj.id)
+		#deleta imagem no cloudinary e posteriormente do bd
+		if p.imagem:
+			cloudinary.uploader.destroy(p.imagem.public_id, invalidate = True)
+		p.delete()
+	
+	#limpa a action padrao delete_selected
+	def get_actions(self, request):
+		actions = super(ParceirosAdmin, self).get_actions(request)
+		del actions['delete_selected']
+		return actions
+	
+	#action delete imagens
+	def delete_parceiros(self, request, obj):
+		qtd = len(obj)
+		for o in obj.all():
+			p = Parceiros.objects.get(id=o.id)
+			#deleta imagem no cloudinary e posteriormente do bd
+			if p.imagem:
+				cloudinary.uploader.destroy(p.imagem.public_id, invalidate = True)
+			p.delete()
+		msg = ungettext(
+						u'%d parceiro foi apagado.',
+						u'%d parceiros foram apagados.',
+						qtd
+		)
+		self.message_user(request, msg % qtd)
+	
+	delete_parceiros.short_description = 'Deletar parceiros selecionadas'
 
 admin.site.register(Sobre, SobreAdmin)
 admin.site.register(Noticia, NoticiasAdmin)
@@ -286,5 +351,6 @@ admin.site.register(Photo, PhotoAdmin)
 admin.site.register(Equipe, EquipeAdmin)
 admin.site.register(HorarioAulas, HorarioAulasAdmin)
 admin.site.register(Modalidades, ModalidadesAdmin)
+admin.site.register(Parceiros, ParceirosAdmin)
 
 #admin.site.register(FilaTeste, FilaTesteAdmin)

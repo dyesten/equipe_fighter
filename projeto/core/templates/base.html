@@ -61,16 +61,22 @@
                         <button type="button" class="btn btn-navbar-highlight btn-large btn-primary" data-toggle="collapse" data-target=".nav-collapse">
                             MENU <span class="icon-chevron-down icon-white"></span>
                         </button>
-                        <div class="nav-collapse collapse" id="menubar">
+						 <div class="nav-collapse collapse" id="menubar">
                             <ul class="nav nav-pills ddmenu">
 								<li id="home" class="active"><a href="/">Home</a></li>
-								<li id="equipe"><a href="/equipe/">Equipe</a></li>
-								<li id="modalidades"><a href="/modalidades/">Modalidades</a></li>
+								<li class="dropdown">
+									<a class="dropdown-toggle" style="cursor:pointer;">Quem Somos <b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li id="equipe"><a href="/equipe/">Equipe</a></li>
+										<li id="modalidades"><a href="/modalidades/">Modalidades</a></li>
+										<li id="parceiros"><a href="/parceiros/">Parceiros</a></li>
+									</ul>
+								</li>
 								<li id="galeria"><a href="/galeria/">Galeria</a></li>
 								<li id="noticias"><a href="/noticias/">Noticias</a></li>
 								<li id="contato"><a href="/contato/">Contato</a></li>
                             </ul>
-                         </div>
+						 </div>
                     </div>
                     </div>
 
